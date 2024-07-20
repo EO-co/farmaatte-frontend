@@ -1,39 +1,24 @@
-"use client";
+'use client';
+import dynamic from 'next/dynamic';
 import TopNavbar from "@/app/components/topNavbar";
-import { useRef } from "react";
-import ReactDice, { ReactDiceRef } from 'react-dice-complete' // Docs: https://github.com/AdamTyler/react-dice-complete
+import { useEffect, useRef } from "react";
+import useDice, { Dice } from 'use-dice'
 
-
-export default function () {
-  const reactDice = useRef<ReactDiceRef>(null)
-
-  const rollDone = (totalValue: number, values: number[]) => {
-    console.log('individual die values array:', values)
-    console.log('total dice value:', totalValue)
-  }
-
-  const rollAll = () => {
-    reactDice.current?.rollAll()
-  }
+export default function Dicepage() {
+  const { isRolling, value, roll } = useDice({ timeout: 1000 })
 
   return (
     <>
       <div>{TopNavbar("Terning", "/games")}</div>
-      <div className=" flex items-center justify-center py-10">
-        <div className="">
-        <ReactDice
-          numDice={2}
-          ref={reactDice}
-          rollDone={rollDone}
-          faceColor="#F9F0DF"
-          dotColor="#070506"
-          outline={true}
-          dieSize={90}
-          margin={30}
-        />
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => rollAll()}>
-          Roll all
-        </button>
+      <div className="flex items-center justify-center py-10">
+        <div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+          <h1>Dice value: {isRolling ? 'dice is rolling' : value}</h1>
+          <Dice value={value} isRolling={isRolling} />
+          <button onClick={roll} type="button">
+            Roll dice
+          </button>
+        </div>
         </div>
       </div>
     </>

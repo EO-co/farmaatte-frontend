@@ -13,6 +13,12 @@ enum states {
   declined,
 }
 
+interface lad {
+  nickname: string;
+  name: string;
+  picturePath: string;
+}
+
 export default function FiftyFifty() {
   const [opponent, setOpponent] = useState("");
   const [challengeIssued, setChallengeIssued] = useState(false);
@@ -41,9 +47,8 @@ export default function FiftyFifty() {
                 className="peer h-full w-80 rounded-[7px] border border-blue-gray-200 border-t-transparent bg-white dark:bg-black px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 empty:!bg-gray-900 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                 onChange={(val) => handleChange(val.target.value)}
               >
-                {lads.map(function (lad) {
-                  return <option value={lad.nickname}>{lad.nickname}</option>;
-                })}
+                {lads.map((lad: lad, index: number) => 
+                  {return <option key={index} value={lad.nickname}>{lad.nickname}</option>})}
               </select>
             </div>
             <div>

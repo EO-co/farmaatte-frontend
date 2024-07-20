@@ -1,18 +1,24 @@
+import Image from "next/image";
+
 export default function Profile() {
   return (
     <div className="max-w-2xl mx-4 sm:max-w-sm md:max-w-sm lg:max-w-sm xl:max-w-sm sm:mx-auto md:mx-auto lg:mx-auto xl:mx-auto mt-16 bg-white shadow-xl rounded-lg text-gray-900">
       <div className="rounded-t-lg h-54 overflow-hidden">
-        <img
+        <Image
           className="object-cover object-top w-full"
           src="farmaatten/lads.jpg"
           alt="Mountain"
+          width={100}
+          height={100}
         />
       </div>
       <div className="mx-auto w-32 h-32 relative -mt-16 border-4 border-white rounded-full overflow-hidden">
-        <img
+        <Image
           className="object-cover object-center h-32"
           src="/farmaatten/oliver.jpg"
           alt="Woman looking front"
+          width={100}
+          height={100}
         />
       </div>
       <div className="text-center mt-2">

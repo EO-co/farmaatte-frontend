@@ -1,6 +1,7 @@
 "use client";
 import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
+import Image from 'next/image'
 
 export default function Navbar() {
   const router = useRouter();
@@ -19,10 +20,12 @@ export default function Navbar() {
           className="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50: dark:hover:bg-gray-800 group"
           onClick={(e) => handleReroute(e, "/games")}
         >
-          <img
+          <Image
             className="w-9 h-9 mb-2 text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500"
             src="/icons/games.svg"
             alt=""
+            width={100}
+            height={100}
           />
           <span className="text-sm text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-500">
             Games
