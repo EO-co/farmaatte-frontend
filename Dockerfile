@@ -13,7 +13,7 @@ RUN npm install --global pm2
 COPY ./package*.json ./
 
 # Install dependencies
-RUN npm install --omit=dev
+RUN npm install
 
 # Copy all files
 COPY ./ ./
