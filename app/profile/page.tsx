@@ -6,7 +6,7 @@ export default function Profile() {
       <div className="rounded-t-lg h-54 overflow-hidden">
         <Image
           className="object-cover object-top w-full"
-          src="farmaatten/lads.jpg"
+          src="/farmaatten/lads.jpg"
           alt="Mountain"
           width={100}
           height={100}
