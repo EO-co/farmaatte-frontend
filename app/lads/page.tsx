@@ -1,9 +1,9 @@
 import ProfileListElement from "../components/profileListElement";
 
 interface lad {
-    nickname: string;
-    name: string;
-    picturePath: string;
+  nickname: string;
+  name: string;
+  picturePath: string;
 }
 
 const lads: lad[] = [
@@ -36,30 +36,35 @@ const lads: lad[] = [
     nickname: "Tobias John Krøyer Duncan-King",
     name: "Tobias",
     picturePath: "/farmaatten/tobias.jpg",
-  }, 
+  },
   {
     nickname: "diggg-Dude",
     name: "Oliver",
-    picturePath: "/farmaatten/oliver.jpg"
-  }
+    picturePath: "/farmaatten/oliver.jpg",
+  },
 ];
 
 export default function Lads() {
   return (
     <div className="bg-white max-w-2xl mx-auto">
-        <h2 className="px-3 py-10 text-2xl font-bold tracking-tight text-gray-900">
-          Lads
-        </h2>
+      <h2 className="px-3 py-10 text-2xl font-bold tracking-tight text-gray-900">
+        Lads
+      </h2>
       <div className="flow-root">
         <ul
           role="list"
           className="divide-y divide-gray-200 dark:divide-gray-700"
         >
-            {lads.map(function(lad) {
-                return (
-                    ProfileListElement(lad.nickname, lad.name, lad.picturePath)
-                )
-            })}
+          {lads.map((lad: lad, index: number) => {
+            return (
+              <ProfileListElement
+                key={index}
+                nickname={lad.nickname}
+                name={lad.name}
+                picturePath={lad.picturePath}
+              />
+            );
+          })}
         </ul>
       </div>
     </div>
