@@ -46,14 +46,14 @@ const lads: lad[] = [
 
 export default function Lads() {
   return (
-    <div className="bg-white max-w-2xl mx-auto">
-      <h2 className="px-3 py-10 text-2xl font-bold tracking-tight text-gray-900">
+    <div className="bg-gray-600 max-w-2xl mx-auto h-screen">
+      <h2 className="px-3 py-6 text-2xl font-bold tracking-tight text-gray-200">
         Lads
       </h2>
-      <div className="flow-root">
+      <div className="mx-auto max-w-2xl px-4 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8 h-4/6 overflow-auto">
         <ul
           role="list"
-          className="divide-y divide-gray-200 dark:divide-gray-700"
+          className="bg-gray-200 rounded-lg shadow divide-y divide-gray-600 max-w-sm"
         >
           {lads.map((lad: lad, index: number) => {
             return (
