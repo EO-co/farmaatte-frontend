@@ -45,7 +45,7 @@ export default function Dicepage() {
 
   function rollDice(sound: HTMLAudioElement) {
     if (easter) {setEaster(false)}
-    if ((randomIntFromInterval(1,5) === 3)) { 
+    if ((randomIntFromInterval(1,100) === 69)) { 
     // if (true) { 
       applyEasterEgg(sound);
       
@@ -90,7 +90,7 @@ export default function Dicepage() {
         
         {easter ? 
         <div>
-          <h1 className='m-5 text-3xl font-bold'>De her skal drikke!</h1>
+          <h1 className='mt-3 text-3xl font-bold'>De her skal drikke!</h1>
         </div>
         : 
         <></>
@@ -105,7 +105,7 @@ export default function Dicepage() {
               key={index}
               onRoll={(value) => console.log(value)}
               defaultValue={randomIntFromInterval(1, 6) as 2 | 1 | 3 | 4 | 5 | 6 | undefined}
-              size={100}
+              size={90}
               triggers={['Enter']}
               faces={["/farmaatten/oliver.jpg", "/farmaatten/daniel.jpg", "/farmaatten/frederik.jpg", "/farmaatten/mads.jpg", "/farmaatten/tobias.jpg", "/farmaatten/simon.jpg"]}
             />
@@ -124,14 +124,14 @@ export default function Dicepage() {
           </div>
         </div>
 
-        <div className="flex items-center justify-center mt-4">
+        {/* <div className="flex items-center justify-center mt-4">
           <button
             className="px-4 py-2 mt-4 text-white bg-blue-500 rounded-md"
             onClick={() => sound && rollDice(sound)}
           >
             Roll
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
