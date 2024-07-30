@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function Profile() {
   return (
     <div className="bg-gray-600 h-screen pt-5">
-      <div className="max-w-2xl mx-4 sm:max-w-sm md:max-w-sm lg:max-w-sm xl:max-w-sm sm:mx-auto md:mx-auto lg:mx-auto xl:mx-auto bg-white shadow-xl rounded-lg bg-gray-200 overflow-auto">
+      <div className="max-w-2xl mx-4 sm:max-w-sm md:max-w-sm lg:max-w-sm xl:max-w-sm sm:mx-auto md:mx-auto lg:mx-auto xl:mx-auto shadow-xl rounded-lg bg-gray-200 overflow-auto">
         <div className="rounded-t-lg h-54 overflow-hidden">
           <Image
             className="object-cover object-top w-full"
