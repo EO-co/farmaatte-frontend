@@ -40,16 +40,16 @@ export default function Login() {
       });
   };
   return (
-    <div className="flex min-h-full flex-1 flex-col px-6 py-12 lg:px-8">
+    <div className="bg-gray-600 flex h-screen flex-1 flex-col px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <Image
           className="mx-auto h-100 w-auto"
           src="/lad.png"
           alt="Your Company"
-          width={100}
-          height={100}
+          width={150}
+          height={150}
         />
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-black dark:text-white">
+        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-200">
           Velkommen lads
         </h2>
       </div>
