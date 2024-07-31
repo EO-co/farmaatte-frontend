@@ -26,6 +26,7 @@ export default function Lads() {
   const fetchProfileData = () => {
     if (!cookie) {
       console.log("could not find cookie");
+      router.push("/login");
     } else {
       let jwt: cookie = JSON.parse(cookie);
       console.log("Cookie: " + jwt);
