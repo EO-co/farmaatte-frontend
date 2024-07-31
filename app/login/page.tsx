@@ -18,6 +18,7 @@ export default function Login() {
   const router = useRouter();
 
   const submit = async () => {
+    setFailed(false);
     setLoading(true);
 
     const axiosInstance = axios.create({
