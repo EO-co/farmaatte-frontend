@@ -67,19 +67,19 @@ export default function Dicepage() {
   },[easter])
 
   return (
-    <div>
+    <div className='bg-gray-600 h-screen'>
       <div>{TopNavbar("Terning", "/games")}</div>
       <div className="flex flex-col items-center justify-center">
         <div className="flex items-center mt-4">
           <button
-            className="p-5 border border-gray-800 rounded-md text-lg font-bold"
+            className="p-5 border border-gray-200 rounded-md text-lg text-gray-200 font-bold"
             onClick={() => setNumOfDice(Math.max(numOfDice - 1, 1))}
           >
             -
           </button>
-          <span className="mx-4 text-xl font-semibold">{numOfDice}</span>
+          <span className="mx-4 text-xl font-semibold text-gray-200">{numOfDice}</span>
           <button
-            className="p-5 border border-gray-800 rounded-md text-lg font-bold"
+            className="p-5 border border-gray-200 rounded-md text-lg text-gray-200 font-bold"
             onClick={() => setNumOfDice(Math.min(numOfDice + 1, 6))}
           >
             +
@@ -90,7 +90,7 @@ export default function Dicepage() {
         
         {easter ? 
         <div>
-          <h1 className='mt-3 text-3xl font-bold'>De her skal drikke!</h1>
+          <h1 className='mt-3 text-3xl font-bold text-gray-200'>De her skal drikke!</h1>
         </div>
         : 
         <></>
