@@ -43,7 +43,6 @@ export default function Profile() {
           else return response.json();
         })
         .then((data) => {
-          console.log(data);
           setLoading(false);
           setProfile(data);
         })
