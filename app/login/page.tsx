@@ -2,6 +2,13 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
+
+interface loginDTO {
+  username: string;
+  password: string;
+}
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -11,23 +18,38 @@ export default function Login() {
   const router = useRouter();
 
   const submit = async () => {
+    setFailed(false);
     setLoading(true);
-    await setTimeout(() => {
-      console.log("Login started");
-    }, 1000);
-    router.push("/games");
+
+    const axiosInstance = axios.create({
+      baseURL: "https://farmaatte.duckdns.org:2100/",
+    });
+    await axiosInstance
+      .post("api/v1/login", {
+        username: username,
+        password: password,
+      })
+      .then((res: any) => {
+        Cookies.set("currentUser", JSON.stringify(res.data));
+        router.push("/games");
+      })
+      .catch((error: any) => {
+        console.log(error);
+        setLoading(false);
+        setFailed(true);
+      });
   };
   return (
-    <div className="flex min-h-full flex-1 flex-col px-6 py-12 lg:px-8">
+    <div className="bg-gray-600 flex h-screen flex-1 flex-col px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <Image
           className="mx-auto h-100 w-auto"
           src="/lad.png"
           alt="Your Company"
-          width={100}
-          height={100}
+          width={150}
+          height={150}
         />
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-black dark:text-white">
+        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-200">
           Velkommen lads
         </h2>
       </div>
@@ -43,17 +65,17 @@ export default function Login() {
             )}
             <div>
               <label
-                htmlFor="email"
+                htmlFor="username"
                 className="block text-sm font-medium leading-6 text-black dark:text-white"
               >
-                Email address
+                Username
               </label>
               <div className="mt-2">
                 <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
+                  id="username"
+                  name="username"
+                  type="username"
+                  autoComplete="username"
                   onChange={(e) => setUsername(e.target.value)}
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"

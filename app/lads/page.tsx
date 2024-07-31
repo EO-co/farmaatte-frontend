@@ -1,50 +1,66 @@
+"use client";
+import { useEffect, useState } from "react";
 import ProfileListElement from "../components/profileListElement";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
-interface lad {
-  nickname: string;
+interface dto {
+  id: number;
   name: string;
-  picturePath: string;
+  nickname: string;
+  picture: string;
 }
 
-const lads: lad[] = [
-  {
-    nickname: "bejeweled",
-    name: "Daniel",
-    picturePath: "/farmaatten/daniel.jpg",
-  },
-  {
-    nickname: "Cliffes",
-    name: "Frederik",
-    picturePath: "/farmaatten/frederik.jpg",
-  },
-  {
-    nickname: "Digdude(founder)",
-    name: "Mads",
-    picturePath: "/farmaatten/mads.jpg",
-  },
-  {
-    nickname: "Viser-Kurt",
-    name: "Nicklas",
-    picturePath: "/farmaatten/nicklas.jpg",
-  },
-  {
-    nickname: "Den omvandrende kalender(Morbror Martin)",
-    name: "Simon",
-    picturePath: "/farmaatten/simon.jpg",
-  },
-  {
-    nickname: "Tobias John Krøyer Duncan-King",
-    name: "Tobias",
-    picturePath: "/farmaatten/tobias.jpg",
-  },
-  {
-    nickname: "diggg-Dude",
-    name: "Oliver",
-    picturePath: "/farmaatten/oliver.jpg",
-  },
-];
+interface cookie {
+  token: string;
+  expires: number;
+  id: number;
+}
 
 export default function Lads() {
+  const [loading, setLoading] = useState(false);
+  const [profiles, setProfiles] = useState<dto[]>();
+  const router = useRouter();
+  const cookie = Cookies.get("currentUser");
+
+  const fetchProfileData = () => {
+    if (!cookie) {
+      console.log("could not find cookie");
+    } else {
+      let jwt: cookie = JSON.parse(cookie);
+      console.log("Cookie: " + jwt);
+      if (Date.now() > jwt.expires) {
+        Cookies.remove("currentUser");
+        router.push("/login");
+      }
+      setLoading(true);
+      fetch("https://farmaatte.duckdns.org:2100/api/v1/lads/all/" + jwt.id, {
+        method: "GET",
+        headers: {
+          Authorization: "Bearer " + jwt.token,
+        },
+      })
+        .then((response) => {
+          if (!response.ok) throw new Error(response.status.toString());
+          else return response.json();
+        })
+        .then((data) => {
+          setLoading(false);
+          setProfiles(data);
+        })
+        .catch((error) => {
+          if (error.message === "401") {
+            Cookies.remove("currentUser");
+            router.push("/login");
+          }
+        });
+    }
+  };
+
+  useEffect(() => {
+    fetchProfileData();
+  }, []);
+
   return (
     <div className="bg-gray-600 max-w-2xl mx-auto h-screen">
       <h2 className="px-3 py-6 text-2xl font-bold tracking-tight text-gray-200">
@@ -55,16 +71,17 @@ export default function Lads() {
           role="list"
           className="bg-gray-200 rounded-lg shadow divide-y divide-gray-600 max-w-sm"
         >
-          {lads.map((lad: lad, index: number) => {
-            return (
-              <ProfileListElement
-                key={index}
-                nickname={lad.nickname}
-                name={lad.name}
-                picturePath={lad.picturePath}
-              />
-            );
-          })}
+          {profiles &&
+            profiles.map((lad: dto, index: number) => {
+              return (
+                <ProfileListElement
+                  key={index}
+                  nickname={lad.nickname}
+                  name={lad.name}
+                  picture={lad.picture}
+                />
+              );
+            })}
         </ul>
       </div>
     </div>

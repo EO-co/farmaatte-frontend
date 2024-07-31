@@ -1,6 +1,23 @@
+"use client";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+
+interface dto {
+  name: string;
+  nickname: string;
+  profilepicture: string;
+}
 
 export default function Profile() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const fetchProfile = () => {};
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
   return (
     <div className="bg-gray-600 h-screen pt-5">
       <div className="max-w-2xl mx-4 sm:max-w-sm md:max-w-sm lg:max-w-sm xl:max-w-sm sm:mx-auto md:mx-auto lg:mx-auto xl:mx-auto shadow-xl rounded-lg bg-gray-200 overflow-auto">
@@ -29,21 +46,12 @@ export default function Profile() {
         <div className="mx-4">
           <h1 className="text-lg font-bold">Stats</h1>
           <ul className="text-surface divide-y divide-gray-600 max-w-sm">
-            <li className="w-full py-4">
-              1v1 stat: 1-1
-            </li>
-            <li className="w-full py-4">
-              Chancen vundet: 10
-            </li>
-            <li className="w-full py-4">
-              Svans: ja
-            </li>
-            <li className="w-full py-4">
-              Fræk: ork ja
-            </li>
+            <li className="w-full py-4">1v1 stat: 1-1</li>
+            <li className="w-full py-4">Chancen vundet: 10</li>
+            <li className="w-full py-4">Svans: ja</li>
+            <li className="w-full py-4">Fræk: ork ja</li>
           </ul>
         </div>
-        
       </div>
     </div>
   );
