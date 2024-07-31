@@ -30,7 +30,7 @@ export default function Login() {
         password: password,
       })
       .then((res: any) => {
-        Cookies.set("currentUser", JSON.stringify(res));
+        Cookies.set("currentUser", JSON.stringify(res.data));
         router.push("/games");
       })
       .catch((error: any) => {
