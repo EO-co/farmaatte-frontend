@@ -12,8 +12,8 @@ export default function TopNavbar(title: string, backpath: string) {
             src="/lad-face.png"
             className="h-8"
             alt="Flowbite Logo"
-            width={100}
-            height={60}
+            width={30}
+            height={0}
           />
           <span className="self-center text-2xl font-semibold whitespace-nowrap text-gray-200">
             {title}

@@ -4,67 +4,126 @@ import TopNavbar from "@/app/components/topNavbar";
 import { lads } from "@/app/components/users";
 import { setPriority } from "os";
 import { useEffect, useState } from "react";
+import * as signalR from "@microsoft/signalr";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 enum states {
-  start,
-  issued,
-  accepted,
-  playerReady,
-  declined,
+  OnePlayerWaiting,
+  TwoPlayerWaiting,
+  CountStarted,
+  GameFinished,
 }
 
-interface lad {
-  nickname: string;
-  name: string;
-  picturePath: string;
+interface lobby {
+  id: string;
+  maxPlayers: number;
+  members: number[];
+  status: states;
+  memberReadyStates: Map<number, boolean>;
+  result: number;
 }
 
 export default function FiftyFifty() {
-  const [opponent, setOpponent] = useState("");
-  const [challengeIssued, setChallengeIssued] = useState(false);
+  const [lobbies, setLobbies] = useState<lobby[]>([]);
+  const [inLobby, setInLobby] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const handleChange = (val: string) => {
-    setOpponent(val);
-  };
-
-  const handleChallenge = () => {
-    setChallengeIssued(true);
-  };
-
-  {
-    if (!challengeIssued) {
-      return (
-        <div>
-          {TopNavbar("Fifty-fifty", "/games")}
-          <div className="flex flex-col flex-row items-center h-full w-full">
-            <div>
-              <h1 className="px-5 py-5 font-semibold text-lg">
-                Vælg din modstander:
-              </h1>
-            </div>
-            <div>
-              <select
-                className="peer h-full w-80 rounded-[7px] border border-blue-gray-200 border-t-transparent bg-white dark:bg-black px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 empty:!bg-gray-900 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
-                onChange={(val) => handleChange(val.target.value)}
-              >
-                {lads.map((lad: lad, index: number) => 
-                  {return <option key={index} value={lad.nickname}>{lad.nickname}</option>})}
-              </select>
-            </div>
-            <div>
-              <button
-                type="button"
-                className="py-7 px-7"
-                onClick={handleChallenge}
-              >
-                Challenge
-              </button>
-            </div>
-          </div>
-        </div>
-      );
-    } else {
-      return <div>{TopNavbar("fifty", "/games")}</div>;
-    }
+  let userid: number;
+  const router = useRouter();
+  const cookie: string | undefined = Cookies.get("currentUser");
+  if (!cookie) {
+    router.push("/login");
+  } else {
+    userid = JSON.parse(cookie).id;
   }
+  const [connection, setConnection] = useState<signalR.HubConnection | null>(
+    null
+  );
+
+  useEffect(() => {
+    const connect = new signalR.HubConnectionBuilder()
+      .withUrl("http://localhost:2098/fiftyFiftyHub")
+      .withAutomaticReconnect()
+      .configureLogging(signalR.LogLevel.Information)
+      .build();
+    setConnection(connect);
+
+    connect
+      .start()
+      .then(() => {
+        connect.on("ReceiveOverview", (lobbyList: lobby[]) => {
+          setLoading(true);
+          setLobbies(lobbyList);
+          setLoading(false);
+          console.log(lobbyList);
+        });
+        connect.on("LobbyFull", (lobbyMsg: string) => {
+          console.log(lobbyMsg);
+        });
+        connect.on("LobbyEmpty", (lobbyMsg: string) => {
+          console.log(lobbyMsg);
+        });
+        connect.on("LobbyStatus", (lobby: lobby) => {
+          console.log(lobby);
+        });
+        connect.invoke("IdentifyUser", userid);
+      })
+      .catch((err) =>
+        console.error("Error while connecting to SignalR Hub:", err)
+      );
+
+    return () => {
+      if (connection) {
+        connection.off("ReceiveOverview");
+        connection.off("LobbyFull");
+        connection.off("LobbyEmpty");
+        connection.off("LobbyStatus");
+        connection.off("IdentifyUser");
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log(lobbies);
+  }, [lobbies]);
+
+  return (
+    <div className="bg-gray-600 h-screen">
+      <div>{TopNavbar("Fifty-fifty", "/games")}</div>
+      <div>
+        <h1 className="text-2xl font-bold text-gray-200">
+          Liste af aktive spil
+        </h1>
+      </div>
+      <div>
+        {loading ? ( // Conditional rendering based on loading state
+          <div>Loading...</div>
+        ) : (
+          <div className="grid grid-cols-1 gap-4">
+            {lobbies &&
+              lobbies.map((lobby: lobby) => {
+                return (
+                  <div
+                    key={lobby.id}
+                    className="bg-gray-200 rounded-lg shadow divide-y divide-gray-600 max-w-sm"
+                  >
+                    <li className="px-6 py-4">
+                      <div className="flex justify-between">
+                        <span className="text-gray-800 font-semibold text-lg">
+                          {lobby.id}
+                        </span>
+                      </div>
+                      <p className="text-gray-700">
+                        {lobby.members?.length ?? 0} / {lobby.maxPlayers}
+                      </p>
+                    </li>
+                  </div>
+                );
+              })}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
